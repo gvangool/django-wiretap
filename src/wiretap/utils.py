@@ -69,7 +69,7 @@ class WiretapHttpResponse(StreamingHttpResponse):
         Copy data from the original response.
         """
 
-        for key, _ in self.items():
+        for key in [k for k,v in self.items()]:
             del self[key]
 
         for key, value in response.items():
