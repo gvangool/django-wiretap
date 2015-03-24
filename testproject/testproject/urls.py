@@ -6,6 +6,7 @@ from django.contrib import admin
 
 urlpatterns = patterns('',
     url(r'^$', 'testproject.testapp.views.index'),
+    url(r'^hello/', 'wiretap.views.capture'),
     url(r'^admin/', include(admin.site.urls)),
 )
 

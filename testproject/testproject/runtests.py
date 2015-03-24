@@ -17,7 +17,7 @@ def main():
 
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=1, interactive=False)
-    failures = test_runner.run_tests(['wiretap'])
+    failures = test_runner.run_tests(['wiretap', 'testapp'])
     sys.exit(1 if failures else 0)
 
 if __name__ == '__main__':
