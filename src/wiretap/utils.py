@@ -76,7 +76,8 @@ class WiretapHttpResponse(StreamingHttpResponse):
             self[key] = value
 
         self.status_code = response.status_code
-        self.reason_phrase = response.reason_phrase
+        if hasattr(response, 'reason_phrase') :
+            self.reason_phrase = response.reason_phrase
         self.cookies = SimpleCookie(str(response.cookies))
 
     def __iter__(self):
