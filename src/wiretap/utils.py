@@ -13,6 +13,9 @@ from wiretap.models import Message
 from wiretap.signals import post_save_message_request, post_save_message_response
 
 
+DEFAULT_MAX_MESSAGE_COUNT = 1000
+
+
 def store_request(request, sender=None):
     req_started_at = timezone.now()
 

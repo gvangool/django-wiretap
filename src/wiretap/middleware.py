@@ -6,8 +6,6 @@ from django.core.exceptions import MiddlewareNotUsed
 from wiretap.models import Tap
 from wiretap.utils import store_request, WiretapHttpResponse
 
-DEFAULT_MAX_MESSAGE_COUNT = 1000
-
 class WiretapMiddleware(object):
     """
     Wiretap middleware. Saves HTTP requests & responses to the `Message` model.
