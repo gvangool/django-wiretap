@@ -48,3 +48,19 @@ class WiretapTestCase(TestCase):
         Tap.objects.create(path_regex='/test')
         capture(self.request_factory.get('/real'))
         self.assertEqual(Message.objects.count(), 1)
+
+    @override_settings(DEBUG=True, WIRETAP_XFF=False)
+    def test_remote_addr(self):
+        Tap.objects.create(path_regex='/test')
+        WiretapMiddleware().process_request(self.request_factory.get('/test', HTTP_X_FORWARDED_FOR='10.10.10.10, 10.0.0.1'))
+        self.assertEqual(Message.objects.count(), 1)
+        msg = Message.objects.all()[0]
+        self.assertEqual(msg.remote_addr, '127.0.0.1')
+
+    @override_settings(DEBUG=True, WIRETAP_XFF=True)
+    def test_xff_header(self):
+        Tap.objects.create(path_regex='/test')
+        WiretapMiddleware().process_request(self.request_factory.get('/test', HTTP_X_FORWARDED_FOR='10.10.10.10, 10.0.0.1'))
+        self.assertEqual(Message.objects.count(), 1)
+        msg = Message.objects.all()[0]
+        self.assertEqual(msg.remote_addr, '10.10.10.10')

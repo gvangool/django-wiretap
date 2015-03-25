@@ -37,10 +37,14 @@ def store_request(request, sender=None):
             content_type=req_content_type
         )
 
+    remote_addr = request.META['REMOTE_ADDR']
+    if getattr(settings, 'WIRETAP_XFF', False) and 'HTTP_X_FORWARDED_FOR' in request.META:
+        remote_addr = request.META['HTTP_X_FORWARDED_FOR'].split(',', 2)[0]
+
     request.wiretap_message = Message.objects.create(
         started_at=req_started_at,
         ended_at=timezone.now(),
-        remote_addr=request.META['REMOTE_ADDR'],
+        remote_addr=remote_addr,
         req_method=request.method,
         req_path=request.path,
         req_headers_json=json.dumps(req_headers),
